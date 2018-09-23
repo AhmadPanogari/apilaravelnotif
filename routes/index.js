@@ -10,7 +10,8 @@ const categoriesRoutes = require('./categories');
 const membersRoutes = require('./members');
 const qoutationRoutes = require('./quotations');
 const contactsRoutes = require('./contacts');
-
+const notificationsRoutes = require('./notifications');
+const searchRoutes = require('./search');
 const addRoutes = (server) => {
     // Add the user routes
     userRoutes.applyRoutes(server, '/users');
@@ -19,7 +20,8 @@ const addRoutes = (server) => {
     membersRoutes.applyRoutes(server,'/members');
     qoutationRoutes.applyRoutes(server,'/quotations');
     contactsRoutes.applyRoutes(server,'/contacts');
-
+    notificationsRoutes.applyRoutes(server,'/notifications');
+    searchRoutes.applyRoutes(server,'/search');
 }
 
 module.exports = addRoutes;

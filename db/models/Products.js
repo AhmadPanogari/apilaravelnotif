@@ -16,7 +16,7 @@ class Products extends Model {
                 modelClass : ImageAssets,
                 // Where the two are joined
                 join :{
-                    from : 'products.ProductImageIds',
+                    from : 'products.productimageids',
                     to : 'imageassets.Id'
                 }
             },
@@ -26,7 +26,7 @@ class Products extends Model {
                 modelClass : Categories,
                 // Where the two are joined
                 join : {
-                    from : 'products.CategoryIds',
+                    from : 'products.categoryids',
                     to : 'categories.Id'
                 }
             }

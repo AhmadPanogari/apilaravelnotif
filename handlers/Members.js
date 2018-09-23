@@ -30,10 +30,26 @@ const profileMember = async(Id)=>{
     return await Members.query().where('Id','=',Id)
 }
 
+const login = async(username,password)=>{
+    let loggined = 0
+
+    let uname = await Members.query().where('Email','=',username);
+    if(uname.length == 0){
+        loggined = 1
+    }
+
+    let user = await Members.query().where('Email','=',username).andWhere('Password','=',password);
+    if(user.length != 0){
+        loggined = 2
+    }
+    return loggined;
+}
+
 module.exports = {
     getAllMembers,
     addMembers,
     editMembers,
     deleteMemebers,
-    profileMember
+    profileMember,
+    login
 }

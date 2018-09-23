@@ -1,8 +1,18 @@
 const Quotations = require('../db/models/Quotations');
 
 const getAllQuotations =  async() => {
-    return await Quotations.query();
+    return await Quotations.query().select('quotations.*','members.*','products.*').joinRelation('members').joinRelation('products');
 };
+
+const getByIdQuotations =  async(Id) => {
+    return await Quotations.query().select('quotations.*','members.*','products.*').joinRelation('members').joinRelation('products').where('quotations.Id','=',Id);
+};
+
+const getOpenQuotations = async()=>{
+    // Status Open = 1
+    return await Quotations.query().select('quotations.*','members.*','products.*').joinRelation('members').joinRelation('products').where('quotations.Statusquotations','=',1);
+}
+
 
 const addQuotations = async(ProductId,MemberId,QuotationDate,Subject,GeoTaggingLat,GeoTagiingLng,StatusQuotations)=>{
     let insert = await Quotations.query().insert({productids:ProductId,memberids:MemberId,quotationdate:QuotationDate,subject:Subject,geotagginglat:GeoTaggingLat,geotagiinglng:GeoTagiingLng,statusquotations:StatusQuotations});
@@ -30,5 +40,7 @@ module.exports = {
     getAllQuotations,
     addQuotations,
     editQuotations,
-    deleteQuotations
+    deleteQuotations,
+    getByIdQuotations,
+    getOpenQuotations,
 }

@@ -80,7 +80,7 @@ routerInstance.post(
     ),
     async(req,res,next)=>{
         try {
-            let product = productHandler.deleteProduct(req.params.Id);
+            let product = await productHandler.deleteProduct(req.params.Id);
             req.log.info(product);
             httpResponse.send(res,200,"Sucess",product);
         } catch (e) {
@@ -100,7 +100,7 @@ routerInstance.get(
     ),
     async(req,res,next)=>{
         try {
-            let product = productHandler.byCategories(req.params.Id);
+            let product = await productHandler.byCategories(req.params.Id);
             req.log.info(product);
             httpResponse.send(res,200,"Sucess",product);
         } catch (e) {
@@ -113,11 +113,31 @@ routerInstance.get(
     '/issliders',
     async(req,res,next)=>{
         try {
-            let product = productHandler.isslider();
+            let product = await productHandler.isslider();
             req.log.info(product);
             httpResponse.send(res,200,"Sucess",product);
         } catch (e) {
             httpResponse.send(res,400,"Error while delete data",e);
+        }
+    }
+)
+
+routerInstance.post(
+    '/search',
+    validate(
+        {
+            Body:{
+                name : Joi.string().required()
+            }
+        }
+    ),
+    async(req,res,next)=>{
+        try {
+            let product = await productHandler.searchProduct(req.body.name)
+            req.log.info(product);
+            httpResponse.send(res,200,"Sucess",product);
+        } catch (e) {
+            httpResponse.send(res,400,"Error while getting data",e);
         }
     }
 )

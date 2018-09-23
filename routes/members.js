@@ -8,7 +8,7 @@ const validate = require('restify-api-validation');
 const Joi = require('joi');
 const _ = require('lodash');
 const httpResponse = require('../helpers/httpResponse');
-
+const mailservice = require('../helpers/nodemailer');
 const routerInstance = new Router();
 const membersHandler = require('../handlers/Members');
 
@@ -17,6 +17,14 @@ routerInstance.get(
     async(req,res,next)=>{
         let membersData = await membersHandler.getAllMembers()
         res.json({code:200,message:"Sucess",data:membersData});   
+    }
+)
+
+routerInstance.get(
+    '/send',
+    async(req,res,next)=>{
+        let notify = mailservice.send("apans.p@gmail.com","no-replay","test");
+        httpResponse.send(res,200,"Sucess",notify);
     }
 )
 
@@ -103,6 +111,34 @@ routerInstance.get(
     async(req,res,next)=>{
         let membersData = await membersHandler.profileMember(req.params.Id);
         res.json({code:200,message:"Sucess",data:membersData});   
+    }
+)
+
+routerInstance.post(
+    '/login',
+    validate(
+        {
+            Body:{
+                username : Joi.string().email().required,
+                password : Joi.string().required,
+            }
+        }
+    ),
+    async(req,res,next)=>{
+        try {
+            let login = await membersHandler.login(req.body.username,req.body.password);
+            if(login == 0){
+                httpResponse.send(res,200,"Username and password not match",null);
+            }
+            if(login == 1){
+                httpResponse.send(res,200,"Username not registered",null);
+            }
+            if(login == 2){
+                httpResponse.send(res,200,"Sucess",null);
+            }
+        } catch (error) {
+            httpResponse.send(res,401,"Error",e);
+        }
     }
 )
 

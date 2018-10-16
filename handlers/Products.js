@@ -3,7 +3,7 @@ const Products = require('../db/models/Products');
 const getAllProducts =  async() => {
     return await Products.query()
         .select(
-        'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+        'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
         .joinRelation('categories')
         .joinRelation('imageassets');
 };
@@ -11,7 +11,7 @@ const getAllProducts =  async() => {
 const editProduct = async(Id)=>{
     let serach = Products.query()
     .select(
-    'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+    'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
     .joinRelation('categories')
     .joinRelation('imageassets').where('products.Id','=',Id);
     return serach;
@@ -44,19 +44,25 @@ const deleteProduct = async(Id)=>{
 }
 
 const byCategories = async(Id)=>{
-    let products = await Products.query().where('categoryids','=',Id);
+    let products = await Products.query().select(
+        'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
+        .joinRelation('categories')
+        .joinRelation('imageassets').where('categoryids','=',Id);
     return products;
 }
 
 const isslider = async()=>{
-    let issliders = await Products.query().where('isslider','=',1);
+    let issliders = await Products.query().select(
+        'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
+        .joinRelation('categories')
+        .joinRelation('imageassets').where('isslider','=',1);
     return issliders
 }
 
 const searchProduct = async(name)=>{
     let serach = Products.query()
     .select(
-    'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+    'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
     .joinRelation('categories')
     .joinRelation('imageassets').where('products.Title','=',name);
     return serach;
@@ -65,7 +71,7 @@ const searchProduct = async(name)=>{
 const searchByCategory = async(name)=>{
     let serach = Products.query()
     .select(
-    'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+    'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
     .joinRelation('categories')
     .joinRelation('imageassets').where('categories.Title','=',name);
     return serach;

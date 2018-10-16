@@ -8,6 +8,15 @@ const getAllProducts =  async() => {
         .joinRelation('imageassets');
 };
 
+const editProduct = async(Id)=>{
+    let serach = Products.query()
+    .select(
+    'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+    .joinRelation('categories')
+    .joinRelation('imageassets').where('products.Id','=',Id);
+    return serach;
+}
+
 const addProducts = async(Title,ShortSpecs,LongSpecs,ProductsImageId,IsSlider,CategoryId)=>{
     
     let insert = await Products.query().insert({
@@ -17,7 +26,7 @@ const addProducts = async(Title,ShortSpecs,LongSpecs,ProductsImageId,IsSlider,Ca
     return insert;
 };
 
-const editProduct = async(Id,data)=>{
+const updateProduct = async(Id,data)=>{
     try {
         let update = JSON.parse(data);    
         let edit = await Products.query().updateAndFetchById(Id,update);
@@ -75,6 +84,7 @@ module.exports = {
     getAllProducts,
     addProducts,
     editProduct,
+    updateProduct,
     deleteProduct,
     byCategories,
     isslider,

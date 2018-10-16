@@ -13,10 +13,26 @@ const routerInstance = new Router();
 const productHandler = require('../handlers/Products');
 
 
-routerInstance.get('/list',async(req,res,next)=>{
+routerInstance.get('/list',
+async(req,res,next)=>{
     let productData = await productHandler.getAllProducts();
     res.json({code:200,message:"Sucess",data:productData});
 });
+
+routerInstance.get('/list/:Id',
+    validate({
+        body : {
+            Id : Joi.number().min(0).required(),
+        }
+    }),async(req,res,next)=>{
+        try {
+            let product = await productHandler.editProduct(req.params.Id);
+            httpResponse.send(res,200,"Sucess",product);
+        } catch (e) {
+            httpResponse.send(res,400,"Error while delete data",e);
+        }
+    }
+);
 
 routerInstance.post(
     '/create',
@@ -59,7 +75,7 @@ routerInstance.post(
             httpResponse.send(res,400,"Id is Required",null);
         }else{
             try {
-                let product = await productHandler.editProduct(req.params.Id,req.body.data);
+                let product = await productHandler.updateProducts(req.params.Id,req.body.data);
                 req.log.info(product);
                 httpResponse.send(res,200,"Sucess",product);
             } catch (e) {

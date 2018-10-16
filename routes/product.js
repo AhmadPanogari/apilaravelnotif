@@ -75,7 +75,7 @@ routerInstance.post(
             httpResponse.send(res,400,"Id is Required",null);
         }else{
             try {
-                let product = await productHandler.updateProducts(req.params.Id,req.body.data);
+                let product = await productHandler.updateProduct(req.params.Id,req.body.data);
                 req.log.info(product);
                 httpResponse.send(res,200,"Sucess",product);
             } catch (e) {

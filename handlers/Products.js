@@ -74,7 +74,7 @@ const searchByCategory = async(name)=>{
 const searchAnything = async(name)=>{
     let serach = Products.query()
     .select(
-    'products.title as ProductTitle','products.*','categories.title as CategoriesTitle','categories.*')
+    'products.title as ProductTitle','products.id as ProductId','products.*','categories.title as CategoriesTitle','categories.*')
     .joinRelation('categories')
     .joinRelation('imageassets').where('products.Title','=',name).orWhere('categories.Title','=',name);
     return serach;
